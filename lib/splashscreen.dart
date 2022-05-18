@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:erp_project/services/staffsharedpreference.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,10 @@ class Splash extends StatefulWidget {
 // String? mtoken;
 
 class _SplashState extends State<Splash> {
-  final StudentPrefService _prefService = StudentPrefService();
-  final StudentUserCardService _userService = StudentUserCardService();
+  final StudentPrefService _studprefService = StudentPrefService();
+  final StaffPrefService _staffprefService = StaffPrefService();
+  final StudentUserCardService _studuserService = StudentUserCardService();
+  final StaffUserCardService _staffuserService = StaffUserCardService();
   late AndroidNotificationChannel channel;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -36,10 +39,18 @@ class _SplashState extends State<Splash> {
     loadFCM();
 
     listenFCM();
-    _prefService.readCache().then((value) {
+
+    // _prefService.readCache();
+    // print("kbtug before");
+    // print(kbtug);
+    // print("kbtug after");
+
+    _studprefService.readCache().then((value) {
+      print("In Student Loop");
       print(value.toString());
+      print("In Student Loop");
       if (value != null) {
-        _userService.readCache().then((value) {
+        _studuserService.readCache().then((value) {
           if (value != null) {
             print("Inner IF Loop");
 
@@ -55,10 +66,39 @@ class _SplashState extends State<Splash> {
           }
         });
       } else {
-        print("Outer Else Loop");
-        return Timer(Duration(seconds: 2),
-            () => Navigator.of(context).pushNamed(WelcomeRoute));
+        _staffprefService.readCache().then((value) {
+          print("In Staff Loop");
+          print(value.toString());
+          print("In Staff Loop");
+          if (value != null) {
+            _staffprefService.readCache().then((value) {
+              if (value != null) {
+                print("Inner IF Loop");
+
+                return Timer(Duration(seconds: 2),
+                    () => Navigator.of(context).pushNamed(StaffHomeRoute));
+              } else {
+                print("Inner Else Loop");
+
+                return Timer(
+                    Duration(seconds: 2),
+                    () => Navigator.of(context)
+                        .pushNamed(StaffOnboardScreenRoute1));
+              }
+            });
+          } else {
+            print("Outer Else Loop");
+            return Timer(Duration(seconds: 2),
+                () => Navigator.of(context).pushNamed(WelcomeRoute));
+          }
+        });
       }
+
+      //  else {
+      //   print("Outer Else Loop");
+      //   return Timer(Duration(seconds: 2),
+      //       () => Navigator.of(context).pushNamed(WelcomeRoute));
+      // }
     });
 
     super.initState();

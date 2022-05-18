@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String empid = "";
+String? empid;
 String? staffid;
 String? staffdob;
 String? staffname;
@@ -15,7 +16,7 @@ class StaffPrefService {
   Future readCache() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     // print(_preferences.getString("kbtid"));
-    empid = _preferences.getString("empid")!;
+    empid = _preferences.getString("empid");
     print(empid);
     print("this is cache: -");
     return empid;
@@ -51,7 +52,8 @@ class StaffUserCardService {
     staffname = _preferences.getString("staffname");
     staffdob = _preferences.getString("staffdob");
     staffdepartment = _preferences.getString("staffdepartment");
-    print("this is cache: -");
+    print("this is cacheeeeeeeeeeeeeeeeeeeeeeee: -");
+    print(staffid);
     return staffid;
   }
 

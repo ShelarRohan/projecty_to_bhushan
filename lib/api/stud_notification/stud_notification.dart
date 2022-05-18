@@ -5,15 +5,15 @@ part 's_notification.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class SNotificationModal {
-  String title, description, date, time;
+  String title, message, created_on, notice_file;
   // bool subscription;
   // Address address;
 
   SNotificationModal({
     required this.title,
-    required this.description,
-    required this.date,
-    required this.time,
+    required this.message,
+    required this.created_on,
+    required this.notice_file,
 
     // required this.address
   });

@@ -106,7 +106,7 @@ class _StaffOnboardingscreen1State extends State<StaffOnboardingscreen1> {
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  StaffOnboardingscreen2(empid: empid),
+                                  StaffOnboardingscreen2(empid: empid!),
                             ),
                           );
                         }),

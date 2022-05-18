@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:erp_project/api/menteemodal/mentee.dart';
 import 'package:erp_project/api/semmodal/sem.dart';
+import 'package:erp_project/api/stud_notification/stud_notification.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,6 +12,9 @@ var semresult;
 
 List<MenteeModal> ment = [];
 var allmentee;
+
+List<SNotificationModal> prev_notifications = [];
+var allnotifications;
 
 class Authentication_Token with ChangeNotifier {
   // Map<String, dynamic> details = {};
@@ -32,7 +37,7 @@ class Authentication_Token with ChangeNotifier {
 
   Future Authentication_TokenFetch(token) async {
     final response = await http.post(
-        Uri.parse('http://192.168.43.194:8000/user/notification_token/send/'),
+        Uri.parse('http://192.168.43.126:8000/user/notification_token/send/'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Token 05ca77736659541562b0986768b48a15423251e3"
@@ -129,6 +134,67 @@ class Semwise_Result_Api with ChangeNotifier {
   }
 }
 
+class Stud_Notification_Api with ChangeNotifier {
+  late String id;
+
+  Map<String, List> prev_noti = {};
+
+  String stud_idd = "";
+  var _nlist = [];
+  Stud_Notification_Api(stud_id) {
+    print("Mentter_Api@@@s");
+    print(stud_id);
+    print("Menttee_Api@@@s");
+
+    stud_idd = stud_id;
+    this.fetchNotiList();
+  }
+
+  List get noti_history {
+    return [..._nlist];
+  }
+
+  fetchNotiList() async {
+    print("Notification historyyyyyyyyyyyyyyyyyyyyyy");
+    print(stud_idd);
+    // final r = await http.get(
+    //     Uri.http("192.168.43.87:8000", "/user/student/sgpa/" + kbtugg + "/"));
+
+    final m = await http.get(
+      Uri.http("192.168.43.126:8000",
+          "/user/student/notification/" + stud_idd + "/"),
+      headers: {
+        "Authorization": "Token 05ca77736659541562b0986768b48a15423251e3",
+      },
+    );
+
+    // final url = 'http://192.168.43.126:8000/apis/v1/?format=json';
+    // final response = await http.get(r);
+    print(" lalalal = ");
+    print(m);
+    print("mlaalal.body =");
+    print(m.body);
+    print("alalal type= ");
+    print(m.runtimeType);
+    print("m.body type= ");
+    print(m.body.runtimeType);
+    print("aaaaaaaa");
+
+    allnotifications = m.body;
+    print("gandnn app runtype");
+    if (m.statusCode == 200) {
+      List<dynamic> data = jsonDecode(m.body);
+      prev_notifications =
+          data.map((data) => SNotificationModal.fromJson(data)).toList();
+      print("noti list****************************************");
+      print("notification.title");
+      print(prev_notifications[0].title);
+
+      notifyListeners();
+    }
+  }
+}
+
 class Staff_Mentee_Api with ChangeNotifier {
   late String id;
 
@@ -156,7 +222,8 @@ class Staff_Mentee_Api with ChangeNotifier {
     //     Uri.http("192.168.43.87:8000", "/user/student/sgpa/" + kbtugg + "/"));
 
     final m = await http.get(
-        Uri.http("192.168.43.126:8000", "/user/emp/mentee/" + emp_idd + "/"));
+      Uri.http("192.168.43.126:8000", "/user/emp/mentee/" + emp_idd + "/"),
+    );
 
     // final url = 'http://192.168.43.126:8000/apis/v1/?format=json';
     // final response = await http.get(r);

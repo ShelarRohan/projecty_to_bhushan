@@ -139,14 +139,14 @@ class _UserDetailCardState extends State<UserDetailCard>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "DOB: " + studentdob,
+                                    studentdob,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 10,
                                   ),
                                   Text(
                                     "Academic Year: " + studentacademic_year,

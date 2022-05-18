@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MenteeCard extends StatefulWidget {
-  String student_id;
-  String name;
-  String surname;
-  String parent_name;
-  String phone_no;
-  String email;
+  String? student_id;
+  String? name;
+  String? surname;
+  String? parent_name;
+  String? phone_no;
+  String? email;
   MenteeCard(
       {Key? key,
       required this.student_id,
@@ -16,8 +16,8 @@ class MenteeCard extends StatefulWidget {
       required this.phone_no,
       required this.email});
   @override
-  _MenteeCardState createState() =>
-      _MenteeCardState(student_id, name, surname, parent_name, phone_no, email);
+  _MenteeCardState createState() => _MenteeCardState(
+      student_id!, name!, surname!, parent_name!, phone_no!, email!);
 }
 
 class _MenteeCardState extends State<MenteeCard>

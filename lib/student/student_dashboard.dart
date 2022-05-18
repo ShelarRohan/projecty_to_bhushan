@@ -20,6 +20,7 @@ import '../Widgets/BouncingButton.dart';
 
 import 'Attendance/Attendance.dart';
 import 'Leave_Apply/Leave_apply.dart';
+import 'Notification/student_notification.dart';
 
 class StudentHome extends StatefulWidget {
   @override
@@ -90,6 +91,11 @@ class _StudentHomeState extends State<StudentHome>
     // final semwise_result_data = Semwise_Result_Api(kbtug);
     Semwise_Result_Api(kbtug);
 
+    print("SIXIIDSDISHDSIDHAIHDABDASDASDASGDSAGDASDGASDGLFGSALK");
+    final stud_noti_history = Stud_Notification_Api(kbtug);
+    print(" -------------------");
+    print(prev_notifications.runtimeType);
+    print(prev_notifications);
     print("Result api END here");
     print("this is ca");
     // print(ca);
@@ -109,7 +115,15 @@ class _StudentHomeState extends State<StudentHome>
           appBar: CommonAppBar(
             menuenabled: false,
             notificationenabled: true,
-            ontap: () {},
+            ontap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      NotifPage(notifications: prev_notifications),
+                ),
+              );
+            },
             title: "Student Dashboard",
           ),
           body: ListView(
@@ -295,6 +309,25 @@ class _StudentHomeState extends State<StudentHome>
                             child: const DashboardCard(
                               name: "Logout",
                               imgpath: "logout.png",
+                            ),
+                          ),
+                        ),
+                        Transform(
+                          transform: Matrix4.translationValues(
+                              delayedAnimation.value * width, 0, 0),
+                          child: Bouncing(
+                            onPress: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => NotifPage(
+                                      notifications: prev_notifications),
+                                ),
+                              );
+                            },
+                            child: DashboardCard(
+                              name: "Notifications",
+                              imgpath: "notification.png",
                             ),
                           ),
                         ),

@@ -47,7 +47,7 @@ class _StudentOnboardingscreen2State extends State<StudentOnboardingscreen2> {
     Map data = {'token': token, 'kbtid': kbtug, 'user_type': kbt};
     var jsonResponse = null;
     var response = await http.post(
-        Uri.parse('http://192.168.43.194:8000/user/notification_token/send/'),
+        Uri.parse('http://192.168.43.126:8000/user/notification_token/send/'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Token 05ca77736659541562b0986768b48a15423251e3"

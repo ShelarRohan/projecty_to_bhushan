@@ -1,131 +1,56 @@
+import 'package:erp_project/Widgets/Notification_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotifCard extends StatefulWidget {
   String title;
-  String description;
-  String date;
-  String time;
+  String message;
+  String created_on;
+  String notice_file;
 
   NotifCard({
     Key? key,
     required this.title,
-    required this.description,
-    required this.date,
-    required this.time,
+    required this.message,
+    required this.created_on,
+    required this.notice_file,
   });
 
   @override
   State<NotifCard> createState() =>
-      _NotifCardState(title, description, date, time);
+      _NotifCardState(title, message, created_on, notice_file);
 }
 
 class _NotifCardState extends State<NotifCard> {
   String title;
   String description;
-  String date;
-  String time;
+  String created_on;
+  String notice_file;
 
-  _NotifCardState(this.title, this.description, this.date, this.time);
+  _NotifCardState(
+      this.title, this.description, this.created_on, this.notice_file);
 
   get scaffoldKey => null;
 
-  // final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 2),
-      child: Material(
-        color: Colors.transparent,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return Card(
+      child: ListTile(
+        title: Text(title + created_on),
+        leading: SizedBox(
+          width: 50,
+          height: 50,
+          child:
+              Image.network("http://192.168.43.126:8000" + notice_file + "/"),
         ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 155,
-          decoration: BoxDecoration(
-            color: Color(0xFFFFFFFF),
-            borderRadius: BorderRadius.circular(20),
-            shape: BoxShape.rectangle,
-            border: Border.all(
-              color: Colors.black,
-              width: 2.6,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15, 8, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: Colors.blue[500],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 2, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      "Date: " + date + time,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 8, 8, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                      child: Text(
-                        description,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.grey[700],
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(280, 0, 0, 0),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text("Read more"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        subtitle: Text(description),
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NotificationDetail(
+                    title: title,
+                    notice_file: notice_file,
+                  )));
+        },
       ),
     );
   }

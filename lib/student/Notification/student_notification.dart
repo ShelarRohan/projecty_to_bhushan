@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotifPage extends StatefulWidget {
-  List<SNotificationModal> notifications;
+  List<SNotificationModal> notifications = [];
   NotifPage({
     Key? key,
     required this.notifications,
@@ -18,7 +18,7 @@ class _NotifPageState extends State<NotifPage> {
   List<SNotificationModal> notifications;
   _NotifPageState(this.notifications);
 
-  get scaffoldKey => null;
+  // get scaffoldKey => null;
   // String name = "";
   // bool changeButton = false;
 
@@ -26,8 +26,10 @@ class _NotifPageState extends State<NotifPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("hhhdhadajshdhjasdhjasdjhasdkjasdhkhasdkjashdkjashdkajshdkashdkasjd");
+    print(notifications.length);
+
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         automaticallyImplyLeading: true,
@@ -50,20 +52,23 @@ class _NotifPageState extends State<NotifPage> {
           padding: EdgeInsets.zero,
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
+            print(
+                "sixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsixsix");
+            print(notifications);
             var notData = notifications[index];
             print("notifications");
             print("notifications");
             print("notifications");
             print("notifications");
             print(notData.title);
-            print(notData.description);
-            print(notData.time);
-            print(notData.date);
+            print(notData.message);
+            print(notData.created_on);
+            print(notData.notice_file);
             return NotifCard(
                 title: notData.title,
-                description: notData.description,
-                date: notData.date,
-                time: notData.time);
+                message: notData.message,
+                created_on: notData.created_on,
+                notice_file: notData.notice_file);
           },
           // children: [
           //   FittedBox(

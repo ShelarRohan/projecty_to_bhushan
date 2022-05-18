@@ -1,7 +1,6 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:erp_project/Widgets/BouncingButton.dart';
-import 'package:erp_project/services/staffsharedpreference.dart';
 // import 'package:erp_project/Widgets/SendNotification/LeaveHistoryCard.dart';
 // import 'package:erp_project/Widgets/LeaveApply/datepicker.dart';
 
@@ -17,14 +16,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
-import 'dart:convert' as convert;
 
-class SendNotification extends StatefulWidget {
+class SendMenteeNoti extends StatefulWidget {
   @override
-  _SendNotificationState createState() => _SendNotificationState();
+  _SendMenteeNotiState createState() => _SendMenteeNotiState();
 }
 
-class _SendNotificationState extends State<SendNotification>
+class _SendMenteeNotiState extends State<SendMenteeNoti>
     with SingleTickerProviderStateMixin {
   List? _myActivities;
   late String _myActivitiesResult;
@@ -87,6 +85,7 @@ class _SendNotificationState extends State<SendNotification>
 
   @override
   void dispose() {
+    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
@@ -108,69 +107,105 @@ class _SendNotificationState extends State<SendNotification>
     }
   }
 
+  // Future<void> uploadImage() async {
+  //   setState(() {
+  //     showSpinner = true;
+  //   });
+
+  //   var stream = new http.ByteStream(image!.openRead());
+  //   stream.cast();
+
+  //   var length = await image!.length();
+
+  //   var uri = Uri.parse('https://fakestoreapi.com/products');
+
+  //   var request = new http.MultipartRequest('POST', uri);
+
+  //   request.fields['title'] = "Static title";
+
+  //   var multiport = new http.MultipartFile('image', stream, length);
+
+  //   request.files.add(multiport);
+
+  //   var response = await request.send();
+
+  //   print(response.stream.toString());
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       showSpinner = false;
+  //     });
+  //     print('image uploaded');
+  //   } else {
+  //     print('failed');
+  //     setState(() {
+  //       showSpinner = false;
+  //     });
+  //   }
+  // }
+
   final TextEditingController notificationController =
-      new TextEditingController();
-  final TextEditingController notification_body_Controller =
       new TextEditingController();
   // final TextEditingController passwordController = new TextEditingController();
 
   final GlobalKey<FormState> _formkey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    uploaddata(String notititle, String notibody, File image,
-        String myActivitiesResult) async {
+    uploaddata(String notititle, File image, String myActivitiesResult) async {
       // sharedPreferences = await SharedPreferences.getInstance();
-      final StaffPrefService _prefService = StaffPrefService();
+      // final StudentPrefService _prefService = StudentPrefService();
+      Map data = {
+        'notititle': notititle,
+        'image': image,
+        'myActivitiesResult': myActivitiesResult
+      };
 
-      _prefService.readCache();
+      print("This is map data  to upload 888888888888888888");
 
-      print("Empidddd");
+      print(data);
 
-      print(empid);
-      print(myActivitiesResult);
-      // print(myActivitiesResult.runtimeType);
-
-      print("empiddd");
-
-      var uri =
-          Uri.parse('http://192.168.43.126:8000/user/notification/token/');
-
-      var request = http.MultipartRequest('POST', uri);
-      request.headers['Authorization'] =
-          "Token 05ca77736659541562b0986768b48a15423251e3";
-      request.fields['title'] = notititle;
-      request.fields['message'] = notibody;
-      request.fields['notice_type'] = "Notification";
-      request.fields['send_to'] = "class";
-      request.fields['from_kbtid'] = empid!;
-      request.fields['send_to_class'] = myActivitiesResult;
-
-      print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-      print(image);
-      print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-      print(image.path);
-      print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-      request.files
-          .add(await http.MultipartFile.fromPath("notice_file", image.path));
-
-      var response = await request.send();
-
-      print("result");
+      print("***********************************");
+      var jsonResponse = null;
+      var response = await http.post(
+          Uri.parse('http://192.168.43.126:8000/user/studentlogin/'),
+          headers: {"Content-Type": "application/json"},
+          body: json.encode(data));
 
       print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-      // print(response.body);
+      print(response.body);
       print(response.statusCode);
       if (response.statusCode == 201) {
+        jsonResponse = json.decode(response.body);
         print("statsssa");
+        print(jsonResponse);
+
         // jsonResponse = json.decode(response.body);
-        // print(jsonResponse);
+        if (jsonResponse != null) {
+          print("response");
+          setState(() {
+            print("setstate");
+            // _isLoading = false;
+          });
+
+          // sharedPreferences.setString('kbtid', kbtidController.text);
+          // _prefService.createCache(kbtidController.text);
+          print("Sharedpreference get");
+          // print(sharedPreferences.getString('kbtid'));
+          // print(_prefService.readCache('kbtid'));
+
+          // _prefService.createCache(kbtidController.text).whenComplete(() {
+          //   Navigator.of(context).pushNamed(StudentOnboardScreenRoute1);
+          // });
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => const MyHome()));
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(builder: (BuildContext context) => MyHome()),
+          //     (Route<dynamic> route) => false);
+        }
       } else {
         setState(() {
           // _isLoading = false;
         });
-        // print(response.body);
+        print(response.body);
       }
     }
 
@@ -358,62 +393,6 @@ class _SendNotificationState extends State<SendNotification>
                     SizedBox(
                       height: height * 0.05,
                     ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: Text(
-                        "Notification Body",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.010,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: 13,
-                        ),
-                        child: Container(
-                          // height: height * 0.06,
-                          height: height * 0.25,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextFormField(
-                            controller: notification_body_Controller,
-                            //autofocus: true,
-                            minLines: 1,
-                            maxLines: 10,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              suffixIcon: searchFieldController.text.isNotEmpty
-                                  ? IconButton(
-                                      icon: Icon(Icons.clear),
-                                      onPressed: () => WidgetsBinding.instance!
-                                          .addPostFrameCallback((_) =>
-                                              searchFieldController.clear()))
-                                  : null,
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(7),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // SizedBox(
-                    //   height: height * 0.010,
-                    // ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -442,6 +421,17 @@ class _SendNotificationState extends State<SendNotification>
                         SizedBox(
                           height: 10,
                         ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     uploadImage();
+                        //   },
+                        //   child: Container(
+                        //     height: 50,
+                        //     width: 200,
+                        //     color: Colors.green,
+                        //     child: Center(child: Text('Upload')),
+                        //   ),
+                        // )
                       ],
                     ),
                     Transform(
@@ -450,12 +440,9 @@ class _SendNotificationState extends State<SendNotification>
                       child: Bouncing(
                         onPress: () {
                           setState(() {
-                            _myActivitiesResult = _myActivities!.join(',');
+                            _myActivitiesResult = _myActivities.toString();
                           });
-                          uploaddata(
-                              notificationController.text,
-                              notification_body_Controller.text,
-                              image!,
+                          uploaddata(notificationController.text, image!,
                               _myActivitiesResult);
                         },
                         child: Container(
